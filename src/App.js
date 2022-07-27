@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import AddToDo from "./components/AddToDo";
+import Like from "./components/Like";
+import Pass from "./components/Pass";
+import TodoList from "./components/TodoList";
 
 function App() {
+  const users = ["person1", "person2"];
+  const [todos, setTodos] = useState([]);
+  console.log(todos);
+  function handleTask(newObj) {
+    let newTodos = [...todos];
+    newTodos.push(newObj);
+    setTodos(newTodos);
+    localStorage.setItem("obj", JSON.stringify(newObj));
+  }
+  function changeStatus(id) {
+    const newTodos = todos.map((item) => {
+      if (item.id === id) {
+        item.status = !item.status;
+      }
+      return item;
+    });
+    setTodos(newTodos);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* <Like />
+      <Pass /> */}
+      <AddToDo handleTask={handleTask} />
+      <TodoList todos={todos} changeStatus={changeStatus} users={users} />
+    </>
   );
 }
 
